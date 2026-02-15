@@ -5,7 +5,6 @@ class Program
 {
     static void Main(string[] args)
     {
-        
         List<Scripture> scriptures = new List<Scripture>();
 
         scriptures.Add(
@@ -28,45 +27,53 @@ class Program
                 "I will go and do the things which the Lord hath commanded"
             )
         );
-
         scriptures.Add(
             new Scripture(
-                new Reference("D&C", 90, 24),
-                "Search diligently, pray always, and be believing, and all things shall work together for your good, if ye walk uprightly and remember the covenant wherewith ye have covenanted one with another. "
+                new Reference("Doctrine and Covenants", 90, 24),
+                "Search diligently, pray always, and be believing, and all things shall work together for you good, if ye walk uprightly and remember the covenant wherewith ye have covenanted one with another."
             )
         );
 
-        
         Random random = new Random();
-        int index = random.Next(scriptures.Count);
-        Scripture scripture = scriptures[index];
 
-        
+        Scripture currentScripture = scriptures[random.Next(scriptures.Count)];
+
         while (true)
         {
             Console.Clear();
-            scripture.Display();
+            currentScripture.Display();
 
             Console.WriteLine();
-            Console.WriteLine("Press ENTER to hide words or type 'quit' to exit:");
+            Console.WriteLine("Press ENTER to hide words");
+            Console.WriteLine("Type 'next' for a new scripture");
+            Console.WriteLine("Type 'quit' to exit");
 
-            string input = Console.ReadLine();
+            string input = Console.ReadLine().ToLower();
 
-            if (input.ToLower() == "quit")
+            if (input == "quit")
             {
                 break;
             }
-
-            scripture.HideRandomWords(3);
-
-            if (scripture.AllWordsHidden())
+            else if (input == "next")
             {
-                Console.Clear();
-                scripture.Display();
-                Console.WriteLine("\nAll words are hidden. Program ending.");
-                break;
+                // Pick a new scripture
+                currentScripture = scriptures[random.Next(scriptures.Count)];
+            }
+            else
+            {
+                currentScripture.HideRandomWords(3);
+
+                if (currentScripture.AllWordsHidden())
+                {
+                    Console.WriteLine("\nAll words are hidden.");
+                    Console.WriteLine("Press ENTER for a new scripture.");
+                    Console.ReadLine();
+
+                    currentScripture = scriptures[random.Next(scriptures.Count)];
+                }
             }
         }
     }
 }
+
 
